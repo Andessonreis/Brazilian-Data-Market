@@ -4,15 +4,17 @@
 
 Module containing helper function for use with Apache Spark
 """
-import __main__
 
 from pyspark.sql import SparkSession
 from pyspark import SparkFiles
 from os import environ, listdir, path
+from dependencies import logging
 
 import json
 
-from dependencies import logging
+import __main__
+
+
 
 
 def start_spark(app_name='my_spark_app', master='local[*]', jar_packages=None,
