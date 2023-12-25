@@ -2,29 +2,33 @@
 data_extraction.py
 ~~~~~~~~~~~~~~~~~~
 
-extracte é essencial para nosso pipeline de dados, realizando ETL para extrair e preparar dados de fontes diversas. 
-Executado como job em um cluster, otimiza o processamento distribuído para lidar com grandes conjuntos de dados. 
-Este packager encapsula funcionalidades críticas, contribuindo para a coesão e qualidade dos dados. 
-Foco na modularidade e eficiência, com o objetivo de fornecer insights valiosos. 
-O processo concentra-se na extração de dados de uma localização genérica, promovendo um código claro e conciso.
+This module contains essential functions for our data pipeline, performing ETL to extract and prepare data from various sources.
+Executed as a job on a cluster, it optimizes distributed processing to handle large datasets.
+This packager encapsulates critical functionalities, contributing to data cohesion and quality.
+Emphasizing modularity and efficiency, with the goal of providing valuable insights.
+The process focuses on extracting data from a generic location, promoting clear and concise code.
 """
 
-def print_cvs(df):
-    print(df)
-
-
-def extracao_csv(spark_session, caminho_arquivo):
+def extract_csv_data(spark_session, file_path):
     """
-    Extrai dados de um arquivo CSV usando Apache Spark.
+    Extracts data from a CSV file using Apache Spark.
 
-    Parameters:
-    - spark_session: A sessão Spark.
-    - caminho_arquivo (str): O caminho do arquivo CSV.
+    Args:
+    - spark_session (SparkSession): An instance of Apache Spark Session for distributed data processing.
+    - file_path (str): The path to the CSV file.
 
     Returns:
-    - DataFrame: Um DataFrame Spark representando os dados do CSV.
+    - DataFrame: A Spark DataFrame representing the CSV data.
     """
-    # Leia os dados do CSV para um DataFrame Spark
-    dados_spark = spark_session.read.csv(caminho_arquivo, header=True, inferSchema=True)
+    # Read CSV data into a Spark DataFrame
+    try:
+        spark_data = (
+            spark_session
+            .read
+            .csv(file_path, header=True, inferSchema=True)
+        )
+        return spark_data
 
-    return dados_spark
+    except Exception as e:
+        print(f"Error extracting CSV data: {str(e)}")
+        return None
